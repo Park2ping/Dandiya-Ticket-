@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dandiya Night – Divya Jyoti Public School, Chandauli</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Rozha+One&display=swap" rel="stylesheet">
+<!-- Firestore rules: see firestore.rules -->
+<style>
+:root{--navy:#102a6b;--red:#c8103c;--maroon:#6d0a22;--gold:#f7b500;--cream:#fff3c4;--sky:#a9d8f7}
+*{box-sizing:border-box}
+body{margin:0;font-family:Hind,sans-serif;background:var(--cream);color:var(--navy);line-height:1.5}
+.garland{height:22px;background:radial-gradient(circle at 12px 10px,var(--gold) 7px,transparent 8px),radial-gradient(circle at 28px 10px,#f26a1b 5px,transparent 6px);background-size:36px 22px}
+.top{background:linear-gradient(var(--sky),var(--cream));text-align:center;padding:20px 16px 8px}
+.top img{height:72px;margin-bottom:6px}
+.top h1{margin:0;font:700 clamp(1.7rem,6vw,3rem)/1.1 Hind,sans-serif;letter-spacing:.5px}
+.top p{margin:4px 0;font-weight:600}
+.ids span{display:inline-block;background:var(--navy);color:#fff;border-radius:99px;padding:2px 14px;margin:4px;font-size:.85rem}
+.title{background:var(--red);text-align:center;padding:28px 16px 48px;clip-path:polygon(0 0,100% 0,100% 88%,50% 100%,0 88%)}
+.title h2{margin:0;font:400 clamp(3.4rem,17vw,7.5rem)/.95 'Rozha One',serif;color:var(--gold);text-shadow:3px 3px 0 var(--maroon)}
+.title h2 em{display:block;font-style:normal;color:#fff}
+.date{display:inline-block;background:var(--gold);color:var(--navy);font-weight:700;font-size:1.3rem;padding:6px 26px;margin-top:16px;transform:rotate(-1.5deg)}
+.title p{color:#fff;margin:10px 0 0}
+main{max-width:640px;margin:-20px auto 0;padding:0 16px 32px}
+.card{background:#fff;border:3px solid var(--navy);border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:6px 6px 0 var(--gold)}
+h3{margin:0 0 10px;font:400 1.5rem 'Rozha One',serif}
+label{display:block;font-weight:600;margin:12px 0 4px}
+input,select{width:100%;padding:11px;font:inherit;border:2px solid var(--navy);border-radius:8px;background:#fffdf5}
+button,.btn{display:inline-block;font:700 1rem Hind,sans-serif;background:var(--red);color:#fff;border:0;border-radius:8px;padding:12px 20px;cursor:pointer;text-decoration:none;margin-top:14px}
+button.alt{background:var(--navy)}button:disabled{opacity:.5}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.bar button{margin:0;padding:6px 12px;font-size:.85rem}
+ul{padding:0;list-style:none;margin:0}li{padding:10px 0;border-top:1px dashed var(--navy)}
+.tag{display:inline-block;margin-left:8px;padding:0 10px;border-radius:99px;font-size:.8rem;background:var(--gold)}
+.tag.paid{background:var(--sky)}li button{margin:0 0 0 8px;padding:3px 12px;font-size:.85rem}
+#qr{width:230px;max-width:100%;border-radius:12px;display:block;margin:10px auto}.tag.approved{background:#9be39b}.tag.rejected{background:#f4a1a1}
+#msg{font-weight:700;color:var(--red);min-height:1.4em}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}dt{font-weight:700}dd{margin:0}
+footer{background:var(--navy);color:#fff;text-align:center;padding:16px 16px 30px;font-size:.9rem;position:relative}
+footer::after{content:"";position:absolute;left:0;right:0;bottom:0;height:14px;background:conic-gradient(from 135deg at 50% 0,var(--gold) 90deg,transparent 0),var(--red);background-size:28px 14px}
+</style>
+</head>
+<body>
+<div class="garland"></div>
+<header>
+  <div class="top">
+    <img src="logo.png" alt="" onerror="this.remove()">
+    <h1>Divya Jyoti Public School</h1>
+    <p>Chandauli &mdash; PO Phulwaria, Deoria 274001</p>
+    <div class="ids"><span>Affiliation 2132727</span><span>School Code 70330</span></div>
+  </div>
+  <div class="title">
+    <h2>Dandiya <em>Night</em></h2>
+    <div class="date">17 October (Day Time)</div>
+    <p>Let&rsquo;s come together to celebrate the spirit of Garba &amp; Dandiya!</p>
+  </div>
+</header>
+
+<main>
+  <section class="card" id="reg">
+    <h3>Register / रजिस्टर करें</h3>
+    <div id="out">
+      <p>Sign in with Google to register. / रजिस्टर करने के लिए पहले Google से साइन इन करें।</p>
+      <button id="login">Sign in with Google</button>
+    </div>
+    <div id="in" hidden>
+      <div class="bar"><span>Signed in as <b id="who"></b></span><button class="alt" id="logout">Sign out</button></div>
+      <form id="form" novalidate>
+        <label for="name">Participant name</label>
+        <input id="name" autocomplete="name" maxlength="60" required>
+        <label for="cls">Class</label>
+        <select id="cls" required></select>
+        <label for="roll">Roll number</label>
+        <input id="roll" inputmode="numeric" maxlength="10" required>
+        <button id="go" type="submit">Register and pay &#8377;200</button>
+      </form>
+      <h3 style="margin-top:22px">My registrations</h3>
+      <ul id="list"></ul>
+    </div>
+    <p id="msg" role="status"></p>
+  </section>
+
+  <section class="card" id="pay" hidden>
+    <h3>Pay &#8377;200 by UPI</h3>
+    <p id="who2"></p>
+    <a class="btn" id="upi" href="#">Pay with UPI app</a>
+    <div id="payform">
+      <p>UPI ID: <b>9336543886@fam</b> (Ashutosh Singh). Or scan:</p>
+      <img id="qr" src="qr.jpg" alt="UPI QR code">
+      <label for="utr">12-digit UPI transaction ID (UTR) from your payment</label>
+      <input id="utr" inputmode="numeric" maxlength="12">
+      <label for="shot">Payment screenshot</label>
+      <input id="shot" type="file" accept="image/*">
+      <button class="alt" id="paid">Submit payment proof</button>
+    </div>
+    <div id="done" hidden>
+      <p><b>Payment proof received.</b> Now send the same screenshot on WhatsApp so your ticket is confirmed quickly.</p>
+      <a class="btn" id="wa" target="_blank" rel="noopener">Send screenshot on WhatsApp</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Event details</h3>
+    <dl>
+      <dt>Date</dt><dd>17 October</dd>
+      <dt>Time</dt><dd>Day time (exact time: TO BE ANNOUNCED)</dd>
+      <dt>Venue</dt><dd>VENUE TO BE ANNOUNCED</dd>
+      <dt>Fee</dt><dd>&#8377;200 per person</dd>
+      <dt>Note</dt><dd>This is a day event.</dd>
+    </dl>
+  </section>
+</main>
+
+<footer>Divya Jyoti Public School, Chandauli &mdash; PO Phulwaria, Deoria 274001<br>Learn &bull; Grow &bull; Shine</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,collection,addDoc,writeBatch,doc,query,where,getDocs,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ====== FILL THESE IN ======
+const CFG={apiKey:"AIzaSyCfrORfOEtBTSaWSq5pLgK465Xyf7Yo8yc",authDomain:"dandiya-ticket.firebaseapp.com",projectId:"dandiya-ticket",appId:"1:977133764200:web:1d751dc90ec0d67fab05dd"};
+const UPI="9336543886@fam", PAYEE="Ashutosh Singh", FEE=200;
+// Optional instant email alert (free EmailJS account): fill these 3 to turn it on
+const EJ={service:"",template:"",key:""};
+const notify=p=>{if(window.emailjs&&EJ.key)emailjs.send(EJ.service,EJ.template,p,{publicKey:EJ.key}).catch(()=>{});};
+// ===========================
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const msg=t=>$("msg").textContent=t||"";
+const app=initializeApp(CFG),auth=getAuth(app),db=getFirestore(app),col=collection(db,"dandiya_registrations");
+let user=null;
+
+$("cls").innerHTML='<option value="">Select class</option>'+["Nursery","LKG","UKG",...Array.from({length:12},(_,i)=>String(i+1))].map(c=>`<option>${c}</option>`).join("");
+$("login").onclick=()=>signInWithPopup(auth,new GoogleAuthProvider()).catch(e=>msg("Sign-in failed: "+e.code));
+$("logout").onclick=()=>signOut(auth);
+
+onAuthStateChanged(auth,u=>{
+  user=u;msg();$("out").hidden=!!u;$("in").hidden=!u;$("pay").hidden=true;
+  if(u){$("who").textContent=u.displayName||u.email;$("name").value=u.displayName||"";load();}
+});
+
+async function load(){
+  try{
+    const s=await getDocs(query(col,where("uid","==",user.uid)));
+    $("list").innerHTML=s.docs.map(d=>{const r=d.data(),p=r.status=="pending";
+      return `<li><b>${esc(r.name)}</b>, Class ${esc(r.cls)}, Roll ${esc(r.roll)}<span class="tag ${esc(r.status)}">${({pending:"Payment pending",paid:"Paid, being verified",approved:"Ticket confirmed",rejected:"Rejected, contact school"})[r.status]}</span>${p?`<button data-id="${d.id}">Pay &#8377;${FEE}</button>`:""}</li>`;
+    }).join("")||"<li>No registrations yet.</li>";
+    $("list").querySelectorAll("button").forEach(b=>b.onclick=()=>{const d=s.docs.find(x=>x.id==b.dataset.id);pay(d.id,d.data());});
+  }catch(e){msg("Could not load registrations: "+e.code);}
+}
+
+$("form").onsubmit=async e=>{
+  e.preventDefault();msg();
+  const r={name:$("name").value.trim(),cls:$("cls").value,roll:$("roll").value.trim()};
+  if(r.name.length<2||!r.cls||!r.roll)return msg("Please fill in name, class and roll number.");
+  $("go").disabled=true;
+  try{
+    const ref=await addDoc(col,{...r,uid:user.uid,email:user.email,amount:FEE,status:"pending",createdAt:serverTimestamp()});
+    $("roll").value="";pay(ref.id,r);load();
+  }catch(x){msg("Could not save registration: "+x.code);}
+  $("go").disabled=false;
+};
+
+function pay(id,r){
+  const note=`Dandiya ${r.name} C${r.cls} R${r.roll}`.slice(0,45);
+  const link=`upi://pay?pa=${encodeURIComponent(UPI)}&pn=${encodeURIComponent(PAYEE)}&am=${FEE}&cu=INR&tn=${encodeURIComponent(note)}`;
+  $("who2").textContent=`${r.name}, Class ${r.cls}, Roll ${r.roll}`;
+  $("upi").href=link;$("utr").value="";$("shot").value="";$("payform").hidden=false;$("done").hidden=true;
+  $("pay").hidden=false;$("pay").scrollIntoView({behavior:"smooth"});
+  $("paid").onclick=async()=>{
+    msg();
+    const utr=$("utr").value.trim(),f=$("shot").files[0];
+    if(!/^\d{12}$/.test(utr))return msg("Enter the 12-digit UPI transaction ID (UTR).");
+    if(!f||!f.type.startsWith("image/"))return msg("Attach your payment screenshot.");
+    $("paid").disabled=true;
+    try{
+      const hash=[...new Uint8Array(await crypto.subtle.digest("SHA-256",await f.arrayBuffer()))].map(n=>n.toString(16).padStart(2,"0")).join("");
+      const img=await createImageBitmap(f),k=Math.min(1,900/img.width),c=document.createElement("canvas");
+      c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+      c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+      const flags=[];
+      if(img.height/img.width<1.5)flags.push("not-a-phone-screenshot-shape");
+      if(Date.now()-f.lastModified>6*36e5)flags.push("old-file");
+      const b=writeBatch(db);
+      b.update(doc(db,"dandiya_registrations",id),{utr,status:"paid",shot:c.toDataURL("image/jpeg",.65),shotHash:hash,flags});
+      b.set(doc(db,"utrs",utr),{uid:user.uid});
+      b.set(doc(db,"hashes",hash),{uid:user.uid});
+      await b.commit();
+      notify({name:r.name,cls:r.cls,roll:r.roll,email:user.email,utr,rid:id,flags:flags.join(", ")||"none"});
+      $("wa").href="https://wa.me/919336543886?text="+encodeURIComponent(`Dandiya Night payment Rs ${FEE}\nName: ${r.name}\nClass: ${r.cls}, Roll: ${r.roll}\nUTR: ${utr}\nRef: ${id}`);
+      $("payform").hidden=true;$("done").hidden=false;load();
+    }catch(x){msg(x.code=="permission-denied"?"This UTR or screenshot was already used for another registration.":"Could not submit: "+x.code);}
+    $("paid").disabled=false;
+  };
+}
+</script>
+</body>
+</html>
